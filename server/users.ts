@@ -40,3 +40,29 @@ export const signIn = async (usernameOrEmail: string, password: string) => {
 		throw new Error(e.message || "An unknown error occured");
 	}
 };
+
+export const signUp = async ({
+	email,
+	password,
+	name,
+	username,
+}: {
+	email: string;
+	password: string;
+	name: string;
+	username: string;
+}) => {
+	await auth.api.signUpEmail({
+		body: {
+			email,
+			password,
+			name,
+			username,
+			displayUsername: username.toLowerCase(),
+		},
+	});
+	return {
+		success: true,
+		message: "Succesfully create user account",
+	};
+};
