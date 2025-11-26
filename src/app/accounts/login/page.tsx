@@ -2,9 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -18,6 +19,7 @@ const LoginSchema = z.object({
 type LoginType = z.infer<typeof LoginSchema>;
 
 const Page = () => {
+	const [view, setView] = useState<boolean>(false);
 	const router = useRouter();
 	const {
 		register,
@@ -54,7 +56,7 @@ const Page = () => {
 						{...register("usernameOremail")}
 						autoComplete="off"
 						placeholder="Enter username or email"
-						className="w-full p-3 text-sm border outline-none  border-zinc-400 rounded-md"
+						className={`w-full p-3 ${errors.usernameOremail ? "border-red-500" : "border-zinc-400"} text-sm border outline-none  rounded-md`}
 					></input>
 					{errors.usernameOremail && (
 						<p className="text-sm text-red-500">
@@ -64,12 +66,23 @@ const Page = () => {
 				</div>
 
 				<div className="w-full">
-					<input
-						{...register("password")}
-						autoComplete="off"
-						placeholder="Enter password"
-						className="w-full p-3 text-sm border outline-none  border-zinc-400 rounded-md"
-					></input>
+					<div className="w-full relative">
+						<input
+							{...register("password")}
+							type={view ? "text" : "password"}
+							autoComplete="off"
+							placeholder="Enter password"
+							className={`w-full p-3 ${errors.password ? "border-red-500" : "border-zinc-400"} text-sm border outline-none   rounded-md`}
+						></input>
+
+						<button
+							onClick={() => setView((prev) => !prev)}
+							type="button"
+							className="cursor-pointer  hover:scale-90 transition-all absolute duration-200 ease-in-out top-1/2 -translate-y-1/2 right-2"
+						>
+							{view ? <EyeIcon width={18} /> : <EyeOffIcon width={18} />}
+						</button>
+					</div>
 					{errors.password && (
 						<p className="text-sm text-red-500">{errors.password.message}</p>
 					)}
