@@ -15,6 +15,20 @@
       "when": 1763824672415,
       "tag": "0001_concerned_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764083603049,
+      "tag": "0002_flaky_garia",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764086236319,
+      "tag": "0003_daily_nova",
+      "breakpoints": true
     }
   ]
 }
