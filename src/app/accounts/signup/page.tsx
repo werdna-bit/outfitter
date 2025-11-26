@@ -192,8 +192,6 @@ const Page = () => {
 					)}
 				</button>
 			</form>
-			{username}
-			{debouncedUsername}
 
 			<p className="text-sm ">
 				Already have an account?
