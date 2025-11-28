@@ -14,14 +14,35 @@ export const Logout = () => {
 
 		setIsLoggingOut(true);
 
-		// Optimistic update
-		router.push("/accounts/login");
-		toast.success("Signed out successfully");
+		try {
+			console.log("Attempting to sign out..."); // Debug log
 
-		// Background cleanup
-		authClient.signOut().catch((err) => {
-			console.error("Sign out error:", err);
-		});
+			const result = await authClient.signOut({
+				fetchOptions: {
+					onSuccess: () => {
+						console.log("Sign out successful - redirect to home"); // Debug log
+						toast.success("Signed out successfully");
+						router.push("/accounts/login");
+					},
+					onError: (context) => {
+						console.error("Sign out fetch error:", context); // Debug log
+						toast.error("Failed to sign out");
+					},
+				},
+			});
+
+			console.log("Sign out result:", result); // Debug log
+
+			if (result?.error) {
+				toast.error(`Sign out error: ${result.error.message || result.error}`);
+				console.error("Sign out error:", result.error);
+			}
+		} catch (err) {
+			console.error("Unexpected sign out error:", err);
+			toast.error("An unexpected error occurred");
+		} finally {
+			setIsLoggingOut(false);
+		}
 	};
 
 	return (

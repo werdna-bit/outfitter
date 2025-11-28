@@ -12,3 +12,18 @@ export async function checkUsername(username: string) {
 
 	return await res.json();
 }
+
+export async function checkUsernameOrEmail(input: string) {
+	const res = await fetch(`/api/check-user?input=${input}`, {
+		method: "get",
+		headers: {
+			"content-type": "application/json",
+		},
+	});
+	if (!res.ok) {
+		const errordata = await res.json().catch(() => null);
+		throw new Error(errordata?.message || `http error! status: ${res.status}`);
+	}
+
+	return await res.json();
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
+import { ProtectedRoutes } from "@/components/ui/ProtectedRoutes";
 import Providers from "@/providers/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
