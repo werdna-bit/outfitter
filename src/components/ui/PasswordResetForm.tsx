@@ -35,7 +35,7 @@ export default function PasswordResetForm() {
 			if (data.available) {
 				setError("usernameOremail", {
 					type: "manual",
-					message: "User not found",
+					message: "User not found, try again",
 				});
 			} else {
 				setOpen(true);
