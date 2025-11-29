@@ -28,6 +28,8 @@ export async function GET(request: Request) {
 
 	return NextResponse.json({
 		available: !existingUser,
-		user: existingUser || null,
+		email: existingUser.email,
+		username: existingUser.username,
+		id: existingUser.id,
 	});
 }

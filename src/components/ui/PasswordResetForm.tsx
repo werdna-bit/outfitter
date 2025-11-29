@@ -8,6 +8,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { checkUsernameOrEmail } from "@/actions/checkUsername";
+import { sendEmail } from "@/actions/sendEmail";
 import { Dialog } from "./Dialog";
 
 const ResetSchema = z.object({
@@ -27,17 +28,25 @@ export default function PasswordResetForm() {
 	});
 
 	const [open, setOpen] = useState<boolean>(false);
+	const [email, setEmail] = useState<string>("");
 
 	const checkMutation = useMutation({
 		mutationFn: async (usernameOremail: string) =>
 			checkUsernameOrEmail(usernameOremail),
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			if (data.available) {
 				setError("usernameOremail", {
 					type: "manual",
 					message: "User not found, try again",
 				});
 			} else {
+				setEmail(data.email);
+				await sendEmail({
+					email: data.email,
+					username: data.username,
+					id: data.id,
+				});
+
 				setOpen(true);
 			}
 		},
@@ -84,7 +93,13 @@ export default function PasswordResetForm() {
 				</button>
 			</form>
 			<Dialog open={open} onClose={() => setOpen(false)}>
-				<p>Test</p>
+				<div className="flex flex-col items-center text-center w-full gap-4">
+					<h1 className="text-lg md:text-2xl font-semibold">Email Sent</h1>
+					<p>
+						We sent an email to {email} with a link to get back into your
+						account.
+					</p>
+				</div>
 			</Dialog>
 		</div>
 	);
